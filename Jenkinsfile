@@ -18,6 +18,7 @@ pipeline {
                 echo "${world}"
                 sh 'pwd && ls -alh'
                 sh 'printenv'
+                sh "echo ${GIT_BRANCH}"
             }
         }
 
