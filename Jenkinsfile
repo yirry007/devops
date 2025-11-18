@@ -11,6 +11,17 @@ pipeline {
 
     //定义流水线的加工流程
     stages {
+        stage('环境检查') {
+            steps {
+                sh 'printenv'
+                echo "正在检查基本信息..."
+                sh "java -version"
+                sh "git --version"
+                sh "docker version"
+                sh "mvn -v"
+            }
+        }
+
         stage('编译') {
             steps {
                 echo "编译..."
