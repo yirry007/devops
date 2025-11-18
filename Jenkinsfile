@@ -19,6 +19,7 @@ pipeline {
                 sh 'pwd && ls -alh'
                 sh 'printenv'
                 sh "echo ${GIT_BRANCH}"
+                echo "${GIT_BRANCH}"
             }
         }
 
