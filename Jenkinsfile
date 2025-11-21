@@ -19,18 +19,25 @@ pipeline {
                 sh "git --version"
                 sh "docker version"
                 //sh "mvn -v"
+                sh 'pwd && ls -alh'
             }
         }
 
         stage('编译') {
+            agent {
+                docker { image 'maven.3-alpine' }
+            }
             steps {
-                echo "编译..."
-                echo "$hello"
-                echo "${world}"
+                //echo "编译..."
+                //echo "$hello"
+                //echo "${world}"
+
+                //git 下载来的代码目录下
                 sh 'pwd && ls -alh'
-                sh 'printenv'
-                sh "echo ${GIT_BRANCH}"
-                echo "${GIT_BRANCH}"
+                sh 'mvn -v'
+                //sh 'printenv'
+                //sh "echo ${GIT_BRANCH}"
+                //echo "${GIT_BRANCH}"
             }
         }
 
