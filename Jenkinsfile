@@ -22,6 +22,8 @@ pipeline {
                 sh "git --version"
                 sh "docker version"
                 sh 'pwd && ls -alh'
+                sh "echo $hello"
+                sh "echo ${world}"
             }
         }
 
