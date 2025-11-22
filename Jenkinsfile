@@ -8,8 +8,8 @@ pipeline {
 
     //定义一些环境信息
     environment {
-        hello = "1234567"
-        world = "abcdefg"
+        hello = "123456"
+        world = "abcdef"
     }
 
     //定义流水线的加工流程
