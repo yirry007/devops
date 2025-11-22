@@ -3,10 +3,13 @@ pipeline {
     //任何一个代理（集群模式下）可用就可以执行
     agent any
 
+    //之后所有stage都必须指定自己的agent
+    //agent none
+
     //定义一些环境信息
     environment {
         hello = "123456"
-        world = "abcde"
+        world = "abcdef"
     }
 
     //定义流水线的加工流程
@@ -18,7 +21,6 @@ pipeline {
                 sh "java -version"
                 sh "git --version"
                 sh "docker version"
-                //sh "mvn -v"
                 sh 'pwd && ls -alh'
             }
         }
