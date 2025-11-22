@@ -27,7 +27,7 @@ pipeline {
 
         stage('编译') {
             agent {
-                docker { image 'maven.3-alpine' }
+                docker { image 'maven:3-alpine' }
             }
             steps {
                 //echo "编译..."
