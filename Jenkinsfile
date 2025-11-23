@@ -39,6 +39,8 @@ pipeline {
                 //git 下载来的代码目录下
                 sh 'pwd && ls -alh'
                 sh 'mvn -v'
+                //打包
+                sh 'mvn clean package -Dmaven.test.skip=true'
                 //sh 'printenv'
                 //sh "echo ${GIT_BRANCH}"
                 //echo "${GIT_BRANCH}"
@@ -51,9 +53,11 @@ pipeline {
             }
         }
 
-        stage('打包') {
+        stage('生成镜像') {
             steps {
                 echo "打包"
+                sh 'docker version'
+                sh 'pwd && ls -alh'
             }
         }
 
