@@ -38,7 +38,7 @@ pipeline {
                 }
             }
             steps {
-                //echo "编译..."
+                echo "编译"
                 //echo "$hello"
                 //echo "${world}"
 
@@ -48,7 +48,7 @@ pipeline {
                 //打包
                 //自定义配置文件
                 // 该指令的运行的最初位置是jenkins容器，因此应该写成容器中的配置文件地址（不是宿主机的配置文件地址） /var/jenkins_home/appconfig/maven/settings.xml
-                sh 'mvn clean package -s "/var/jenkins_home/appconfig/maven/settings.xml" -Dmaven.test.skip=true'
+                sh 'cd ${WORKSPACE} && mvn clean package -s "/var/jenkins_home/appconfig/maven/settings.xml" -Dmaven.test.skip=true'
                 //sh 'mvn clean package -Dmaven.test.skip=true'
                 //sh 'printenv'
                 //sh "echo ${GIT_BRANCH}"
@@ -59,6 +59,7 @@ pipeline {
         stage('测试') {
             steps {
                 echo "测试"
+                sh 'pwd && ls -alh'
             }
         }
 
@@ -67,6 +68,7 @@ pipeline {
                 echo "打包"
                 sh 'docker version'
                 sh 'pwd && ls -alh'
+                sh 'docker build -t java-devops-demo .'
             }
         }
 
