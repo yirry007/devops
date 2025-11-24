@@ -13,6 +13,11 @@ pipeline {
         // jenkins 运行过程中各环节可能会改变工作目录，因此需要保存初始的工作目录
         // 进入这个目录后打包的 jar包会放到这
         WS = "${WORKSPACE}"
+
+        //引用jenkins配置的全局密钥信息
+        DOCKER_SECRET = credentials('hub.docker.com')
+        IMAGE_NAME = "piaomou/java-devops-demo"   // 比如：piaomou/myapp
+        TAG = "latest"
     }
 
     //定义流水线的加工流程
@@ -73,6 +78,25 @@ pipeline {
                 sh 'docker version'
                 sh 'pwd && ls -alh'
                 sh 'docker build -t java-devops-demo .'
+
+                //镜像就可以保存
+
+            }
+        }
+
+        stage('登录 Docker Hub') {
+            steps {
+                sh '''
+                    echo "${DOCKER_SECRET_PSW}" | docker login -u "${DOCKER_SECRET_USR}" --password-stdin
+                '''
+            }
+        }
+
+        stage('推送镜像') {
+            steps {
+                sh '''
+                    docker push ${IMAGE_NAME}:${TAG}
+                '''
             }
         }
 
@@ -95,7 +119,15 @@ pipeline {
 
         stage('发送报告') {
             steps {
-                echo "报告"
+                echo "准备发送报告"
+            }
+        }
+
+        stage('发布版本') {
+            steps {
+                //手动输入版本【参数化构建】
+
+                //
             }
         }
     }
