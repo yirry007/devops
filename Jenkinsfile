@@ -8,7 +8,7 @@ pipeline {
 
     //定义一些环境信息
     environment {
-        hello = "123456"
+        hello = "1234567"
         world = "abcdef"
     }
 
