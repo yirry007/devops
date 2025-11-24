@@ -82,6 +82,21 @@ pipeline {
                 sh 'docker rm -f java-devops-demo-dev'
                 sh 'docker run -d -p 8888:8080 --name java-devops-demo-dev java-devops-demo'
             }
+            post {
+                failure {
+                    // One or more steps need to be included within each condition's block.
+                    echo "Failed"
+                }
+                success {
+                    echo "Success"
+                }
+            }
+        }
+
+        stage('发送报告') {
+            steps {
+                echo "报告"
+            }
         }
     }
 }
