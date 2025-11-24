@@ -77,20 +77,26 @@ pipeline {
                 echo "打包"
                 sh 'docker version'
                 sh 'pwd && ls -alh'
-                sh 'docker build -t piaomou/java-devops-demo .'
-            }
-        }
-
-        stage('登录 Docker Hub') {
-            steps {
-                sh '''
-                    echo "${DOCKER_SECRET_PSW}" | docker login -u "${DOCKER_SECRET_USR}" --password-stdin
-                '''
+                sh 'docker build -t java-devops-demo .'
             }
         }
 
         stage('推送镜像') {
+            input {
+                message "需要部署到生产环境吗？"
+                ok "确认"
+                //submitter "PM"
+                parameters {
+                    string(name: 'TAG', defaultValue: 'latest', description: '请指定生产环境需要部署的版本')
+                }
+            }
             steps {
+                sh '''
+                    echo "${DOCKER_SECRET_PSW}" | docker login -u "${DOCKER_SECRET_USR}" --password-stdin
+                '''
+                sh '''
+                    docker tag java-devops-demo ${IMAGE_NAME}:${TAG}
+                '''
                 sh '''
                     docker push ${IMAGE_NAME}:${TAG}
                 '''
@@ -101,7 +107,7 @@ pipeline {
             steps {
                 echo "部署"
                 sh 'docker rm -f java-devops-demo-dev'
-                sh 'docker run -d -p 8888:8080 --name java-devops-demo-dev piaomou/java-devops-demo'
+                sh 'docker run -d -p 8888:8080 --name java-devops-demo-dev java-devops-demo'
             }
             post {
                 failure {
@@ -121,14 +127,6 @@ pipeline {
         }
 
         stage('部署生产环境') {
-            input {
-                message "需要部署到生产环境吗？"
-                ok "确认"
-                //submitter "PM"
-                parameters {
-                    string(name: 'TAG', defaultValue: 'latest', description: '请指定生产环境需要部署的版本')
-                }
-            }
             steps {
                 sh "echo 发布版本"
 
