@@ -51,6 +51,7 @@ pipeline {
                 //打包
                 //自定义配置文件
                 // 该指令的运行的最初位置是jenkins容器，因此应该写成容器中的配置文件地址（不是宿主机的配置文件地址） /var/jenkins_home/appconfig/maven/settings.xml
+                // 每一行指令都是基于当前的jenkins环境信息，和上下指令无关，所以不能把 cd ${WS} 单独拆分
                 sh 'cd ${WS} && mvn clean package -s "/var/jenkins_home/appconfig/maven/settings.xml" -Dmaven.test.skip=true'
                 //sh 'mvn clean package -Dmaven.test.skip=true'
                 //sh 'printenv'
@@ -78,6 +79,8 @@ pipeline {
         stage('部署') {
             steps {
                 echo "部署"
+                sh 'docker rm -f java-devops-demo-dev'
+                sh 'docker run -d -p 8888:8080 --name java-devops-demo-dev java-devops-demo'
             }
         }
     }
