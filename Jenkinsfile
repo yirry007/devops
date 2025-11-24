@@ -8,8 +8,8 @@ pipeline {
 
     //定义一些环境信息
     environment {
-        hello = "123456"
-        world = "abcdef"
+        hello = "1234567"
+        world = "abcdefg"
     }
 
     //定义流水线的加工流程
@@ -31,7 +31,6 @@ pipeline {
             agent {
                 docker {
                     image 'maven:4.0.0-rc-4-eclipse-temurin-25-alpine'//用完就杀掉
-                    //args '-v /a/settings.xml:/app/settings.xml'// = docker run -v /a/settings.xml:/app/settings.xml
                     args '-v /var/jenkins_home/appconfig/maven/.m2:/root/.m2'
                 }
             }
