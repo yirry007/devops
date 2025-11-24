@@ -77,7 +77,7 @@ pipeline {
                 echo "打包"
                 sh 'docker version'
                 sh 'pwd && ls -alh'
-                sh 'docker build -t java-devops-demo .'
+                sh 'docker build -t piaomou/java-devops-demo .'
             }
         }
 
@@ -101,7 +101,7 @@ pipeline {
             steps {
                 echo "部署"
                 sh 'docker rm -f java-devops-demo-dev'
-                sh 'docker run -d -p 8888:8080 --name java-devops-demo-dev java-devops-demo'
+                sh 'docker run -d -p 8888:8080 --name java-devops-demo-dev piaomou/java-devops-demo'
             }
             post {
                 failure {
