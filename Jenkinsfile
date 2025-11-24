@@ -83,11 +83,12 @@ pipeline {
 
         stage('推送镜像') {
             input {
-                message "需要部署到生产环境吗？"
-                ok "确认"
+                message "需要推送远程镜像吗？"
+                ok "需要"
                 //submitter "PM"
                 parameters {
                     string(name: 'TAG', defaultValue: 'latest', description: '请指定生产环境需要部署的版本')
+                    choice(choices: ['bj-01', 'sh-02', 'wh-03'], description: '请选择部署区域', name: 'AREA')
                 }
             }
             steps {
@@ -97,6 +98,19 @@ pipeline {
                 sh '''
                     docker tag java-devops-demo ${IMAGE_NAME}:${TAG}
                 '''
+
+                script {
+                    //groovy
+                    def where = "${AREA}"
+                    if (where == "bj-01") {
+                        sh "echo 准备部署到 bj-01 区..."
+                    } else if (where == "sh-02") {
+                        sh "echo 准备部署到 sh-02 区..."
+                    } else {
+                        sh "echo 准备部署到 wh-03 区..."
+                    }
+                }
+
                 sh '''
                     docker push ${IMAGE_NAME}:${TAG}
                 '''
