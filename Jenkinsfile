@@ -10,6 +10,9 @@ pipeline {
     environment {
         hello = "123456"
         world = "abcdef"
+        // jenkins 运行过程中各环节可能会改变工作目录，因此需要保存初始的工作目录
+        // 进入这个目录后打包的 jar包会放到这
+        WS = "${WORKSPACE}"
     }
 
     //定义流水线的加工流程
@@ -48,7 +51,7 @@ pipeline {
                 //打包
                 //自定义配置文件
                 // 该指令的运行的最初位置是jenkins容器，因此应该写成容器中的配置文件地址（不是宿主机的配置文件地址） /var/jenkins_home/appconfig/maven/settings.xml
-                sh 'cd ${WORKSPACE} && mvn clean package -s "/var/jenkins_home/appconfig/maven/settings.xml" -Dmaven.test.skip=true'
+                sh 'cd ${WS} && mvn clean package -s "/var/jenkins_home/appconfig/maven/settings.xml" -Dmaven.test.skip=true'
                 //sh 'mvn clean package -Dmaven.test.skip=true'
                 //sh 'printenv'
                 //sh "echo ${GIT_BRANCH}"
