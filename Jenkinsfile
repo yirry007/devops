@@ -29,7 +29,10 @@ pipeline {
 
         stage('编译') {
             agent {
-                docker { image 'maven:4.0.0-rc-4-eclipse-temurin-25-alpine' }
+                docker {
+                    image 'maven:4.0.0-rc-4-eclipse-temurin-25-alpine'
+                    //args '-v /a/settings.xml:/app/settings.xml'// = docker run -v /a/settings.xml:/app/settings.xml
+                }
             }
             steps {
                 //echo "编译..."
