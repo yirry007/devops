@@ -16,7 +16,7 @@ pipeline {
 
         //引用jenkins配置的全局密钥信息
         DOCKER_SECRET = credentials('hub.docker.com')
-        IMAGE_NAME = "piaomou/java-devops-demo"   // 比如：piaomou/myapp
+        IMAGE_NAME = "piaomou/java-devops-demo"
         TAG = "latest"
     }
 
