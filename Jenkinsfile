@@ -30,7 +30,10 @@ pipeline {
         stage('编译') {
             agent {
                 docker {
+                    //jenkins 的容器外的宿主机上执行
                     image 'maven:4.0.0-rc-4-eclipse-temurin-25-alpine'//用完就杀掉
+                    // /var/jenkins_home/appconfig/maven/.m2 为宿主机的路径
+                    // /root/.m2 为 maven容器的路径，该路径在宿主机的 /var/lib/docker/volumes/jenkins-data/_data/appconfig/maven/settings.xml 中设置
                     args '-v /var/jenkins_home/appconfig/maven/.m2:/root/.m2'
                 }
             }
@@ -44,6 +47,7 @@ pipeline {
                 sh 'mvn -v'
                 //打包
                 //自定义配置文件
+                // 该指令的运行的最初位置是jenkins容器，因此应该写成容器中的配置文件地址（不是宿主机的配置文件地址） /var/jenkins_home/appconfig/maven/settings.xml
                 sh 'mvn clean package -s "/var/jenkins_home/appconfig/maven/settings.xml" -Dmaven.test.skip=true'
                 //sh 'mvn clean package -Dmaven.test.skip=true'
                 //sh 'printenv'
