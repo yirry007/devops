@@ -30,8 +30,9 @@ pipeline {
         stage('编译') {
             agent {
                 docker {
-                    image 'maven:4.0.0-rc-4-eclipse-temurin-25-alpine'
+                    image 'maven:4.0.0-rc-4-eclipse-temurin-25-alpine'//用完就杀掉
                     //args '-v /a/settings.xml:/app/settings.xml'// = docker run -v /a/settings.xml:/app/settings.xml
+                    args '-v /var/jenkins_home/appconfig/maven/.m2:/root/.m2'
                 }
             }
             steps {
@@ -43,7 +44,9 @@ pipeline {
                 sh 'pwd && ls -alh'
                 sh 'mvn -v'
                 //打包
-                sh 'mvn clean package -Dmaven.test.skip=true'
+                //自定义配置文件
+                sh 'mvn clean package -s "/var/jenkins_home/appconfig/maven/settings.xml" -Dmaven.test.skip=true'
+                //sh 'mvn clean package -Dmaven.test.skip=true'
                 //sh 'printenv'
                 //sh "echo ${GIT_BRANCH}"
                 //echo "${GIT_BRANCH}"
