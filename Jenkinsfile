@@ -120,12 +120,20 @@ pipeline {
             }
         }
 
-        stage('发布版本') {
+        stage('部署生产环境') {
             steps {
-                echo '发布'
                 //手动输入版本【参数化构建】
+                input {
+                    message "需要部署到生产环境吗？"
+                    ok "确认"
+                    //submitter "PM"
+                    parameters {
+                        string(name: 'TAG', defaultValue: 'latest', description: '请指定生产环境需要部署的版本')
+                    }
+                }
+                sh "echo 发布版本"
 
-                //
+                // 版本的保存，代码的保存，镜像的保存
             }
         }
     }
