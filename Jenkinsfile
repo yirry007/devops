@@ -78,9 +78,6 @@ pipeline {
                 sh 'docker version'
                 sh 'pwd && ls -alh'
                 sh 'docker build -t java-devops-demo .'
-
-                //镜像就可以保存
-
             }
         }
 
@@ -125,6 +122,7 @@ pipeline {
 
         stage('发布版本') {
             steps {
+                echo '发布'
                 //手动输入版本【参数化构建】
 
                 //
